@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    font-family: Verdana, sans-serif;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background-color: #e5fffb;
+    border-bottom: 3px solid black;
+}
+
+input:focus {
+    outline: none;
+}
+
+.vertical-flex-align-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fitheader {
+    height: 70px;
+    padding: 5px;
+}
+
+.settings {
+    height: 60px;
+    padding: 5px;
+}
+
+.search {
+    padding-left: 10px;
+    border: none;
+    border-radius: 10000px;
+    width: 50%;
+    height: 40px;
+    margin: auto;
+    font-size: 20px;
+}
