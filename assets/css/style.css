@@ -76,3 +76,16 @@ input:focus {
     height: 100vh;
     width: 22%;
 }
+
+.show-only-on-mobile {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .show-only-on-desktop {
+        display: none;
+    }
+    .show-only-on-mobile {
+        display: unset;
+    }
+}

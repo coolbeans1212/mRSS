@@ -17,7 +17,10 @@ session_start();
     </head>
     <body>
         <header>
-            <a href="/"><img src="/assets/images/logo.png" alt="mRSS Logo" class="fitheader"></a>
+            <a href="/">
+                <img src="/assets/images/logo.png" alt="mRSS Logo" class="fitheader show-only-on-desktop">
+                <img src="/assets/images/mrss-favicon.ico" alt="mRSS Logo" class="fitheader show-only-on-mobile">
+            </a>
             <input type="text" id="search" placeholder="Search your feeds..." class="search" autocomplete="off">
             <div class="horizontal-flex-align-center">
                 <div class="vertical-flex-align-center">
