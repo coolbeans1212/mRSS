@@ -1,3 +1,14 @@
+<?php
+require __DIR__ . '/scripts/db.php';
+session_set_cookie_params([
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'None'
+]);
+ini_set('session.cookie_domain', '.mateishome.page');
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,7 +17,7 @@
     </head>
     <body>
         <header>
-            <img src="/assets/images/logo.png" alt="mRSS Logo" class="fitheader">
+            <a href="/"><img src="/assets/images/logo.png" alt="mRSS Logo" class="fitheader"></a>
             <input type="text" id="search" placeholder="Search your feeds..." class="search" autocomplete="off">
             <div class="horizontal-flex-align-center">
                 <div class="vertical-flex-align-center">
@@ -19,4 +30,12 @@
                         <h2>Username</h2>
                         Logged in
                     </div>
+                </div>
         </header>
+        <main>
+            <div class="rss-feeds-listing">
+
+            </div>
+        </main>
+    </body>
+</html>

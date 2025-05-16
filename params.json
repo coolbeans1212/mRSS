@@ -1,0 +1,5 @@
+{
+    "dbpasswordlocation": "/etc/apache2/DBPASSWORD",
+    "userdbname": "forum",
+    "maindbname": "mrss"
+}

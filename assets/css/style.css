@@ -67,3 +67,12 @@ input:focus {
     margin-left: 10px;
     padding: 2px 4px 2px 2px;
 }
+
+.rss-feeds-listing {
+    display: flex;
+    background-color: #eeeeee;
+    border-right: 3px solid black;
+    padding: 5px;
+    height: 100vh;
+    width: 22%;
+}
