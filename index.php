@@ -67,7 +67,17 @@ if (isset($_SESSION['user_id'])) {
         </header>
         <main>
             <div class="rss-feeds-listing">
-
+            </div>
+            <div class="rss-feed">
+                <div class="rss-item">
+                    <div class="rss-item-content">
+                        <h3>Item Title</h3>
+                        <p>Item Description</p>
+                    </div>
+                    <div class="rss-item-footer">
+                        <p>Published on: <span>2023-10-01</span></p>
+                        <a href="#">Read more</a>
+                </div>
             </div>
         </main>
         <script>

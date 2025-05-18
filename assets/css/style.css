@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Verdana, sans-serif;
-    overlay: hidden;
+    line-height: 1.5em;
 }
 
 header {
@@ -14,9 +14,16 @@ header {
     padding-right: 5px;
 }
 
-h2 {
+h2, h3, h4, h5, h6 {
     margin: 0;
+}
+
+h2 {
     font-weight: normal;
+}
+
+p {
+    margin: 2px 0;
 }
 
 a {
@@ -34,6 +41,7 @@ input:focus {
 
 main {
     height: calc(100vh - 93px);
+    display: flex;
 }
 
 .vertical-flex-align-center {
@@ -126,4 +134,17 @@ main {
     .show-only-on-mobile {
         display: unset;
     }
+}
+
+.rss-feed {
+    width: calc(78% - 70px)
+}
+
+.rss-item {
+    margin: 20px;
+    padding: 10px;
+    width: 100%;
+    height: max-content;
+    background: #dbe1e4;
+    border-radius: 10px;
 }
