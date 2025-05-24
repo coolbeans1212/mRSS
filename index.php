@@ -75,7 +75,7 @@ if (isset($_SESSION['user_id'])) {
                         <p>Item Description</p>
                     </div>
                     <div class="rss-item-footer">
-                        <p>Published on: <span>2023-10-01</span></p>
+                        <span>Published on: <span>2023-10-01</span></span> &bull;
                         <a href="#">Read more</a>
                 </div>
             </div>

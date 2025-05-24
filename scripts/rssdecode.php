@@ -14,7 +14,7 @@ $rss = '<?xml version="1.0" encoding="UTF-8" ?>
       <title>PHP 8.3 released - It\'s Glorious!</title>
       <link>https://example.com/php-8-3-released</link>
       <description>PHP 8.3 is out and it\'s melting servers with elegance.</description>
-      <pubDate>Fri, 16 May 2025 09:00:00 +0000</pubDate>
+      <pubDate>Wed, 14 May 2025 09:00:00 +0000</pubDate>
       <guid>https://example.com/php-8-3-released</guid>
     </item>
 
@@ -37,16 +37,21 @@ class RssFeed { // PHP + OOP = poop (LOL) // who came up with this joke? // it w
       exit;
     }
     $json = json_encode($xml);
-    $array = json_decode($json, true); // turn the xml into an associative array because php is the best programming language ever
+    $array = json_decode($json, true);
     $this->feed = $array;
     foreach ($this->feed['channel']['item'] as &$item) {
       if (isset($item['pubDate'])) {
         $item['pubDate'] = strtotime($item['pubDate']);
       }
     }
+    unset($item); // break reference (we dont need it anymore)
     if (isset($this->feed['channel']['lastBuildDate'])) {
       $this->feed['channel']['lastBuildDate'] = strtotime($this->feed['channel']['lastBuildDate']);
     }
+    // sort items by pubDate descending
+    usort($this->feed['channel']['item'], function($a, $b) {
+      return $b['pubDate'] <=> $a['pubDate'];
+    });
   }
   public function getFeed() {
     return $this->feed;
@@ -69,10 +74,30 @@ class RssFeed { // PHP + OOP = poop (LOL) // who came up with this joke? // it w
       return null;
     }
   }
+}
 
+class CreateHTML {
+  public static function createItem($item) {
+    $html = '<div class="rss-item">';
+    $html .= '<div class="rss-item-content">';
+    $html .= '<h3>' . htmlspecialchars($item['title']) . '</h3>';
+    $html .= '<p>' . htmlspecialchars($item['description']) . '</p>';
+    $html .= '</div>';
+    $html .= '<hr>';
+    $html .= '<div class="rss-item-footer">';
+    $html .= '<span>Published on: <span>' . date('Y-m-d', $item['pubDate']) . '</span></span> &bull; ';
+    $html .= '<a href="' . htmlspecialchars($item['link']) . '">Read more</a>';
+    $html .= '</div>';
+    $html .= '</div>';
+    return $html;
+  }
+
+  public static function createPage($pageLength, $pageNumber) {
+    if (RssFeed::getAmountOfitems() < $pageLength * $pageNumber) {
+      return 'No items found for this page.';
+    }
+  }
 }
 
 $rssFeed = new RssFeed($rss);
-var_dump($rssFeed->getFeed());
-var_dump($rssFeed->getChannelInfo()['title'] ?? 'Unknown');
-var_dump($rssFeed->getItemFromID(0));
+echo CreateHTML::createItem($rssFeed->getItemFromID(0)); // Display the first item as an example

@@ -116,7 +116,7 @@ main {
 
 .rss-feeds-listing {
     display: flex;
-    background-color: #eeeeee;
+    background-color: #f5f5f5;
     border-right: 3px solid black;
     padding: 5px;
     height: 100%;
@@ -145,6 +145,7 @@ main {
     padding: 10px;
     width: 100%;
     height: max-content;
-    background: #dbe1e4;
+    background: #f1f1f1;
     border-radius: 10px;
+    border: 1px solid black;
 }
