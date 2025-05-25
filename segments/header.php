@@ -34,3 +34,20 @@
                 <a href="/account/register.php">Register</a>
                 <?php } ?>
         </div>
+        <script>
+            const userProfileContainer = document.querySelector('.user-profile-container');
+            const profileDropdown = document.querySelector('.profile-dropdown');
+            userProfileContainer.addEventListener('click', () => {
+                if (profileDropdown.style.display === 'none') {
+                    profileDropdown.style.display = '';
+                } else {
+                    profileDropdown.style.display = 'none';
+                }
+            });
+            // close the dropdown if the user clicks somewhere else
+            document.addEventListener('click', (event) => {
+                if (!userProfileContainer.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.style.display = 'none';
+                }
+            });
+        </script>
