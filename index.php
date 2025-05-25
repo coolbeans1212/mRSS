@@ -28,56 +28,26 @@ if (isset($_SESSION['user_id'])) {
     </head>
     <body>
         <header>
-            <a href="/">
-                <img src="/assets/images/logo.png" alt="mRSS Logo" class="fitheader show-only-on-desktop">
-                <img src="/assets/images/mrss-favicon.ico" alt="mRSS Logo" class="fitheader show-only-on-mobile">
-            </a>
-            <input type="text" id="search" placeholder="Search your feeds..." class="search" autocomplete="off">
-            <div class="horizontal-flex-align-center">
-                <div class="vertical-flex-align-center">
-                    <img src="/assets/images/cog.png" alt="Settings" height="50px" width="50px" >
-                    Settings
-                </div>
-                <div class="vertical-flex-align-center">
-                    <div class="user-profile-container">
-                        <?php if (isset($userInfo)) { ?>
-                        <img src="https://mateishome.page/applets/imgproxy.php?id=<?php echo $userInfo['pfp'] ?? 20; ?>" alt="User" class="user-profile-picture">
-                        <?php } else { ?>
-                        <img src="/assets/images/guestAccount.png" alt="User" class="user-profile-picture">
-                        <?php } ?>
-                        <div>
-                            <?php
-                            echo '<h2>'; echo $userInfo['username'] ?? 'Guest'; echo '</h2>';
-                            if (isset($userInfo)) {
-                                echo 'Logged in';
-                            } else {
-                                echo 'Temporary account';
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="profile-dropdown" style="display: none;">
-                        <?php if (isset($userInfo)) { ?>
-                        <a href="/account/logout.php">Logout</a>
-                        <?php } else { ?>
-                        <a href="/account/login.php">Login</a>
-                        <a href="/account/register.php">Register</a>
-                        <?php } ?>
-                </div>
+            <?php require_once __DIR__ . '/segments/header.php'; ?>
         </header>
         <main>
             <div class="rss-feeds-listing">
             </div>
             <div class="rss-feed">
-                <div class="rss-item">
-                    <div class="rss-item-content">
-                        <h3>Item Title</h3>
-                        <p>Item Description</p>
-                    </div>
-                    <div class="rss-item-footer">
-                        <span>Published on: <span>2023-10-01</span></span> &bull;
-                        <a href="#">Read more</a>
-                </div>
+                <script>
+                    const rssFeedContainer = document.querySelector('.rss-feed');
+                    const response = fetch("/scripts/rssdecode.php");
+                    response.then(res => {
+                        if (res.ok) {
+                            return res.text();
+                        }
+                        throw new Error('Network response was not ok');
+                    }).then(data => {
+                        rssFeedContainer.innerHTML = data;
+                    }).catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                </script>
             </div>
         </main>
         <script>
