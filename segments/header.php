@@ -11,7 +11,7 @@
         <div class="vertical-flex-align-center">
             <div class="user-profile-container">
                 <?php if (isset($userInfo)) { ?>
-                <img src="https://mateishome.page/applets/imgproxy.php?id=<?php echo $userInfo['pfp'] ?? 20; ?>" alt="User" class="user-profile-picture">
+                <img src="https://mateishome.page/applets/imgproxy.php?id=<?php echo $userInfo['pfp']; ?>" alt="User" class="user-profile-picture">
                 <?php } else { ?>
                 <img src="/assets/images/guestAccount.png" alt="User" class="user-profile-picture">
                 <?php } ?>

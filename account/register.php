@@ -94,7 +94,20 @@ if (isset($_SESSION['user_id'])) {
                     $stopForumSpamResponse = file_get_contents('https://api.stopforumspam.org/api?ip=' . urlencode($ipAddress) . '&f=json');
                     $stopForumSpamResponse = json_decode($stopForumSpamResponse, true);
                     if (isset($stopForumSpamResponse['ip']['appears']) && $stopForumSpamResponse['ip']['appears']) {
-                        die('nuh uh. <b><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">You ESPECIALLY don\'t get to try again.</a></b>');
+                        die('Potential spammer blocked. <b><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">You ESPECIALLY don\'t get to try again.</a></b>');
+                    }
+
+                    // yippee!!! all the checks passed :D ok time to become a real account!!!!
+                    $sql = "INSERT INTO users (username, hashed_password, email, pfp) VALUES (?, ?, ?, ?)";
+                    $stmt = $userdb->prepare($sql);
+                    if ($stmt === false) {
+                        die("Database error: " . $userdb->error . '. <b><a href="">Click here to try again</a></b>');
+                    }
+                    $stmt->bind_param('sssi', $username, $hashedPassword, $email, mt_rand(1, 78));
+                    if ($stmt->execute()) {
+                        die('Account created successfully! <b><a href="/account/login.php">Click here to log in</a></b>');
+                    } else {
+                        die("Database error: " . $stmt->error . '. <b><a href="">Click here to try again</a></b>');
                     }
                 }
                 ?>
