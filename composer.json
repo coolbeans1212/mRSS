@@ -1,0 +1,20 @@
+{
+    "name": "coolbeans1212/mrss",
+    "description": "cool rss reader",
+    "type": "project",
+    "require": {
+        "simplepie/simplepie": "^1.8"
+    },
+    "license": "AGPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "Coolbeans1212\\Mrss\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "coolbeans1212",
+            "email": "matei@mateishome.page"
+        }
+    ]
+}

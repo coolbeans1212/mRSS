@@ -36,7 +36,9 @@ if (isset($_SESSION['user_id'])) {
             <div class="rss-feed">
                 <script>
                     const rssFeedContainer = document.querySelector('.rss-feed');
-                    const response = fetch("/scripts/rssdecode.php");
+                    const response = fetch("/scripts/rss2html.php?url=" + encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml") + "&fromItem=0", { // dummy data for now
+                        method: 'GET',
+                    });
                     response.then(res => {
                         if (res.ok) {
                             return res.text();

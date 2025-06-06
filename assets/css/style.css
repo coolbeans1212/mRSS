@@ -161,7 +161,8 @@ main {
 }
 
 .rss-feed {
-    width: calc(78% - 70px)
+    width: calc(78% - 70px);
+    padding: 5px;
 }
 
 .rss-item {
