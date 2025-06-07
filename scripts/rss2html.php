@@ -1,12 +1,9 @@
 <?php
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 header('Content-Type: application; charset=utf-8');
 require_once __DIR__ . '/../vendor/autoload.php'; // SO YOU'RE TELLING ME THAT THERE WAS A COMPOSER PACKAGE FOR SIMPLEPIE THE WHOLE TIME?!
 $url = urldecode($_GET['url'] ?? '');
-$fromItem = $_GET['fromItem'] ?? 0;
+$fromPage = $_GET['fromPage'] ?? 1;
+$pageLength = $_GET['pageLength'] ?? 5;
 if (empty($url)) {
     header('HTTP/1.0 400 Bad Request');
     die('No RSS URL provided');
@@ -14,6 +11,24 @@ if (empty($url)) {
 $feed = new SimplePie();
 $feed->set_feed_url($url);
 $feed->set_cache_location(__DIR__ . '/../cache');
-$feed->set_cache_duration(3600); //1 hour
+$feed->set_cache_duration(1800); // only cache for 30 minutes
 $feed->init();
-echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1>' . htmlspecialchars($feed->get_title()) . '</h1></a>';
+echo 'this is a test :) i\'m editing on the live version :P';
+echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1 class="margin-20px">' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . '</h1></a>';
+echo '<div class="rss-items-container">';
+foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) {
+    echo '<div class="rss-item">';
+    echo '<h2 class="rss-item-title"><a href="' . $item->get_permalink() . '">' . $item->get_title() . '</a></h2>';
+    echo '<p class="rss-item-description">' . $item->get_description() . '</p>';
+    echo '<div class="rss-item-footer">';
+    echo '<hr>';
+    echo '<p class="rss-item-date">' . $item->get_date('D j F Y h:i:s A e');
+    if ($item->get_authors()) {
+      echo ', by ';
+      foreach ($item->get_authors() as $author) {
+          echo htmlspecialchars($author->get_name()) . ' ';
+      }
+    }
+    echo '</div></div>';
+}
+echo '</div>';

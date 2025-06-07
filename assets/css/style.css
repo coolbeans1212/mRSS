@@ -1,3 +1,5 @@
+@import url("/assets/css/cssVariables.php");
+
 body {
     margin: 0;
     font-family: Verdana, sans-serif;
@@ -66,6 +68,10 @@ button {
 main {
     height: calc(100vh - 93px);
     display: flex;
+}
+
+hr {
+    margin: 2px 0px;
 }
 
 .vertical-flex-align-center {
@@ -163,16 +169,50 @@ main {
 .rss-feed {
     width: calc(78% - 70px);
     padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rss-items-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 50px);
+    width: 100%;
 }
 
 .rss-item {
     margin: 20px;
     padding: 10px;
     width: 100%;
-    height: max-content;
+    height: calc((100% - 20px) / var(--items-per-page));
+    min-height: calc((100% - 20px) / var(--items-per-page));
+    max-height: calc((100% - 20px) / var(--items-per-page));
     background: #f1f1f1;
     border-radius: 10px;
     border: 1px solid black;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rss-item-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0 4px 0;
+}
+
+.rss-item-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    flex-grow: 1;
+}
+
+.rss-item-footer {
+    margin-top: auto;
+    width: calc(100% - 20px);
 }
 
 .login-container {
@@ -198,4 +238,8 @@ main {
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.margin-20px {
+    margin: 20px;
 }
