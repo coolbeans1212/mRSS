@@ -1,5 +1,3 @@
-@import url("/assets/css/cssVariables.php");
-
 body {
     margin: 0;
     font-family: Verdana, sans-serif;
@@ -178,15 +176,14 @@ hr {
     flex-direction: column;
     height: calc(100% - 50px);
     width: 100%;
+    margin-left: 25px;
 }
 
 .rss-item {
-    margin: 20px;
+    margin: 10px 0;
     padding: 10px;
     width: 100%;
-    height: calc((100% - 20px) / var(--items-per-page));
-    min-height: calc((100% - 20px) / var(--items-per-page));
-    max-height: calc((100% - 20px) / var(--items-per-page));
+    height: -webkit-fill-available;
     background: #f1f1f1;
     border-radius: 10px;
     border: 1px solid black;
@@ -197,7 +194,6 @@ hr {
 }
 
 .rss-item-title {
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     padding: 0 0 4px 0;
@@ -213,6 +209,12 @@ hr {
 .rss-item-footer {
     margin-top: auto;
     width: calc(100% - 20px);
+}
+
+.rss-item-date {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .login-container {
