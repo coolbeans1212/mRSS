@@ -10,11 +10,15 @@ if (empty($url)) {
 }
 $feed = new SimplePie();
 $feed->set_feed_url($url);
-$feed->set_cache_location(__DIR__ . '/../cache');
-$feed->set_cache_duration(1800); // only cache for 30 minutes
+if ($_GET['cache'] ?? 'true' == 'false') {
+    $feed->enable_cache(false);
+} else {
+    $feed->enable_cache(true);
+    $feed->set_cache_location(__DIR__ . '/../cache');
+    $feed->set_cache_duration(1800); // only cache for 30 minutes
+}
 $feed->init();
-echo 'this is a test :) i\'m editing on the live version :P';
-echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1 class="margin-20px">' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . '</h1></a>';
+echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1 class="margin-20px">' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . ' (Demo feed)' . '</h1></a>';
 echo '<div class="rss-items-container">';
 foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) {
     echo '<div class="rss-item">';

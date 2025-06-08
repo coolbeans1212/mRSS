@@ -149,7 +149,20 @@ hr {
     padding: 5px;
     height: 100%;
     width: 22%;
+    flex-direction: column;
 }
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.feed-icon {
+    width: 48px;
+    height: 48px;
+}
+
 
 .show-only-on-mobile {
     display: none;

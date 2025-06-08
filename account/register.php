@@ -75,7 +75,7 @@ if (isset($_SESSION['user_id'])) {
                     if (strlen($password) < 8) {
                         die('Password must be at least 8 characters long. <b><a href="">Click here to try again</a></b>');
                     }
-                    $passwordsToDenyRaw = file_get_contents(__DIR__ . '/../assets/json/PwnedPasswordsTop100k.json');            
+                    $passwordsToDenyRaw = file_get_contents(__DIR__ . '/../assets/json/PwnedPasswordsTop100k.json');
                     $passwordsToDeny = json_decode($passwordsToDenyRaw, true);
                     if (binarySearchArray($passwordsToDeny, $password) !== -1) { // binary search is so fast what // binary search is so fast <i>why</i>?
                         die('Password is too weak / common. <b><a href="">Click here to try again</a></b>');
