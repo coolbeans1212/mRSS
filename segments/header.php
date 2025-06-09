@@ -4,10 +4,12 @@
     </a>
     <input type="text" id="search" placeholder="Search your feeds..." class="search" autocomplete="off">
     <div class="horizontal-flex-align-center">
-        <div class="vertical-flex-align-center">
-            <img src="/assets/images/cog.png" alt="Settings" height="50px" width="50px" >
-            Settings
-        </div>
+        <a href="/settings.php">
+            <div class="vertical-flex-align-center">
+                <img src="/assets/images/cog.png" alt="Settings" height="50px" width="50px" >
+                Settings
+            </div>
+        </a>
         <div class="vertical-flex-align-center">
             <div class="user-profile-container">
                 <?php if (isset($userInfo)) { ?>

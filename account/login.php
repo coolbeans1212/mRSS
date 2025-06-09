@@ -36,6 +36,10 @@ if (isset($_SESSION['user_id'])) {
                     <button type="submit">Login</button>
                 </form>
                 <?php
+                if ($_GET['from'] ?? '' === 'settings') {
+                    echo '<i>Gatekeeping the settings page, log in first</i>';
+                }
+
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $sql = "SELECT * FROM users WHERE username = ?";
                     $stmt = $userdb->prepare($sql);

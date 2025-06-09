@@ -44,6 +44,14 @@ input, button {
     font-size: 16px;
 }
 
+button:hover {
+    background-color: #f0f0f0;
+}
+
+button:active {
+    background-color: #e0e0e0;
+}
+
 input {
     padding: 3px;
     border: 1px solid black;
@@ -52,6 +60,33 @@ input {
 
 input:focus {
     outline: none;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    padding: 0;
+    background-color: #29292975;
+    border: 1px solid black;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 4px;
+    height: 18px;
+    border-radius: 25%;
+    background-color: #000;
+    margin-top: -8px;
+    cursor: grab;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #000;
+    background-color: #ffffff;
+    border: 1px solid black;
 }
 
 button {
@@ -156,11 +191,32 @@ hr {
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
+    background-color: #fafafa;
+    padding: 3px;
+    border-radius: 5px;
+    margin: 2px 0;
 }
 
 .feed-icon {
     width: 48px;
     height: 48px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    padding: 10px;
+    background-color: #fbfbfb;
+    border-radius: 10px;
+    border: 1px solid black;
 }
 
 
@@ -257,4 +313,29 @@ hr {
 
 .margin-20px {
     margin: 20px;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+
+.column-align-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.column-align-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.settings-buttons {
+    position: absolute;
+    bottom: 34px;
+    right: 30px;
 }
