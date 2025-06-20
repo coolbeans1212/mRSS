@@ -17,6 +17,17 @@ if (isset($_SESSION['user_id'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     $userInfo = $result->fetch_assoc();
+
+    $query = "SELECT * FROM user_preferences WHERE id = ?";
+    $stmt = $mrssdb->prepare($query);
+    $stmt->bind_param('i', $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        createUserPreferences();
+        $result = $stmt->get_result();
+    }
+    $userPreferences = $result->fetch_assoc();
 }
 ?>
 
@@ -36,7 +47,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="rss-feed">
                 <script>
                     const rssFeedContainer = document.querySelector('.rss-feed');
-                    const response = fetch("/scripts/rss2html.php?url=" + encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml") + "&fromPage=1&pageLength=5", { // dummy data for now
+                    const response = fetch("/scripts/rss2html.php?url=" + encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml") + "&fromPage=1&pageLength=<?php echo $userPreferences['itemsPerPage']?>", { // dummy data for now
                         method: 'GET',
                     });
                     response.then(res => {

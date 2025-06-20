@@ -54,3 +54,14 @@ function rateLimit($userdb, $clientId, $limit = 10, $timeFrame = 60) { // Will r
         return true;
     }
 }
+
+function createUserPreferences() { // This function can only be called before any HTML is outputted due to use of header();
+    $dbs = require __DIR__ . '/db.php';
+    $userdb = $dbs['userdb'];
+    $mrssdb = $dbs['mrssdb'];
+    $query = "INSERT INTO user_preferences (id) VALUES (?)";
+    $stmt = $mrssdb->prepare($query);
+    $stmt->bind_param('i', $_SESSION['user_id']);
+    $stmt->execute();
+    header('Location: ' . $_SERVER['REQUEST_URI']);
+}

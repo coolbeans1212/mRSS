@@ -71,6 +71,7 @@ input[type="range"] {
     border: 1px solid black;
 }
 
+/* Chromium & Other Webkit-based browsers because SOMEONE thought it would be funny to make each browser use different CSS properties for the same thing. */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -87,6 +88,51 @@ input[type="range"]::-webkit-slider-runnable-track {
     background: #000;
     background-color: #ffffff;
     border: 1px solid black;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 4px;
+    height: 18px;
+    border-radius: 25%;
+    background-color: #000;
+    cursor: grab;
+    border: none;
+}
+
+input[type="range"]::-moz-range-track {
+    height: 4px;
+    background-color: #ffffff;
+    border: 1px solid black;
+}
+
+/* IE */
+input[type="range"]::-ms-thumb {
+    width: 4px;
+    height: 18px;
+    border-radius: 25%;
+    background-color: #000;
+    cursor: grab;
+    border: none;
+}
+
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper {
+    background-color: #ffffff;
+    border: 1px solid black;
+}
+
+input[type="range"]::-ms-tooltip {
+    display: none;
+}
+
+/* Remove default styles for Firefox and IE */
+input[type="range"] {
+    background: transparent;
+}
+
+input[type="range"]:focus {
+    outline: none;
 }
 
 button {
