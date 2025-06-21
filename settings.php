@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2>Layout</h2>
                 </div>
                 <div class="row" id="customisation-selection">
-                    <img src="" alt="Customisation settings icon" class="feed-icon">
+                    <img src="/assets/images/customise.png" alt="Customisation settings icon" class="feed-icon">
                     <h2>Customisation</h2>
                 </div>
                 <div class="row" id="account-selection">
