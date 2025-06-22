@@ -45,9 +45,26 @@ if (isset($_SESSION['user_id'])) {
             <div class="rss-feeds-listing">
             </div>
             <div class="rss-feed">
+            </div>
                 <script>
-                    const rssFeedContainer = document.querySelector('.rss-feed');
-                    const response = fetch("/scripts/rss2html.php?url=" + encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml") + "&fromPage=1&pageLength=<?php echo $userPreferences['itemsPerPage']?>", { // dummy data for now
+                    let rssFeedContainer = document.querySelector('.rss-feed');
+                    let feedURL = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
+                    function attachPaginationListeners() {
+                        document.querySelectorAll('.different-page').forEach(page => {
+                            page.addEventListener('click', () => {
+                                let url = new URL(window.location.href);
+                                url.searchParams.set('fromPage', page.id);
+                                // Instead of reloading, fetch new page content!
+                                fetch("/scripts/rss2html.php?url=" + feedURL + "&fromPage=" + page.id + "&pageLength=<?php echo $userPreferences['itemsPerPage']?>")
+                                    .then(res => res.text())
+                                    .then(data => {
+                                        rssFeedContainer.innerHTML = data;
+                                        attachPaginationListeners(); // re-attach after update :3
+                                    });
+                            });
+                        });
+                    }
+                    let response = fetch("/scripts/rss2html.php?url=" + feedURL + "&fromPage=1&pageLength=<?php echo $userPreferences['itemsPerPage']?>", {
                         method: 'GET',
                     });
                     response.then(res => {
@@ -57,11 +74,13 @@ if (isset($_SESSION['user_id'])) {
                         throw new Error('Network response was not ok');
                     }).then(data => {
                         rssFeedContainer.innerHTML = data;
+                        attachPaginationListeners(); // attach after first load :P
                     }).catch(error => {
                         console.error('Fetch error:', error);
                     });
                 </script>
-            </div>
+                <script>
+                    
         </main>
     </body>
 </html>

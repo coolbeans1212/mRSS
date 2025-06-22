@@ -36,3 +36,20 @@ foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) 
     echo '</div></div>';
 }
 echo '</div>';
+?>
+<div class="page-navigation">
+<!-- Pagination -->
+<?php
+$totalItems = $feed->get_item_quantity();
+$totalPages = ceil($totalItems / $pageLength);
+$minimumPageToDisplay = $fromPage > 5 ? $fromPage - 5 : 1;
+$maximumPageToDisplay = $fromPage + 5 < $totalPages ? $fromPage + 5 : $totalPages;
+for ($page = $minimumPageToDisplay; $page <= $maximumPageToDisplay; $page++) {
+    if ($page == $fromPage) {
+        echo '<span class="current-page">' . $page . '</span>';
+    } else {
+        echo '<span class="different-page" id="' . $page . '">' . $page . '</span>';
+    }
+}
+?>
+</div>
