@@ -147,6 +147,8 @@ button {
 main {
     height: calc(100vh - 93px);
     display: flex;
+    overflow: hidden;
+    min-width: 0;
 }
 
 hr {
@@ -231,6 +233,7 @@ hr {
     height: 100%;
     width: 22%;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 .row {
@@ -280,10 +283,13 @@ hr {
 }
 
 .rss-feed {
-    width: calc(78% - 70px);
-    padding: 5px;
+    width: -webkit-fill-available;
+    padding: 5px 20px;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .rss-items-container {
@@ -291,7 +297,6 @@ hr {
     flex-direction: column;
     height: calc(100% - 50px - 40px);
     width: 100%;
-    margin-left: 25px;
 }
 
 .rss-item {
