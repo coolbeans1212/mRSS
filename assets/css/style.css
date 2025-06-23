@@ -299,7 +299,9 @@ hr {
     margin: 10px 0;
     width: 100%;
     flex: 1 1 auto;
+    flex-grow: 1;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .rss-item, .floating-rss-item {
@@ -310,7 +312,16 @@ hr {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+}
+
+.floating-rss-item-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 .floating-rss-item {
@@ -320,7 +331,9 @@ hr {
     overflow-y: auto;
     z-index: 1000;
     width: -webkit-fill-available;
+    width: -moz-available;
     height: -webkit-fill-available;
+    height: -moz-available;
 }
 
 .rss-item-title {
@@ -330,7 +343,7 @@ hr {
 }
 
 .rss-item-description {
-    overflow: hidden;
+    overflow: inherit;
     text-overflow: ellipsis;
     white-space: normal;
     flex-grow: 1;

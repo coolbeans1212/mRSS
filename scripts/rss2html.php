@@ -4,6 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php'; // SO YOU'RE TELLING ME THAT T
 $url = urldecode($_GET['url'] ?? '');
 $fromPage = $_GET['fromPage'] ?? 1;
 $pageLength = $_GET['pageLength'] ?? 5;
+$timezone = $_GET['timezone'] ?? 'Europe/London';
 if (empty($url)) {
     header('HTTP/1.0 400 Bad Request');
     die('No RSS URL provided');
@@ -25,10 +26,12 @@ foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) 
     $id++;
     echo '<div class="rss-item" id="' . $id . '">';
     echo '<h2 class="rss-item-title"><a href="' . $item->get_permalink() . '">' . $item->get_title() . '</a></h2>';
-    echo '<p class="rss-item-description">' . $item->get_description() . '</p>';
+    echo '<span class="rss-item-description">' . $item->get_description() . '</span>';
     echo '<div class="rss-item-footer">';
     echo '<hr>';
-    echo '<p class="rss-item-date">' . $item->get_date('D j F Y h:i:s A e');
+    $date = new DateTime($item->get_date('c'), new DateTimeZone($timezone));
+    $date->setTimezone(new DateTimeZone($timezone));
+    echo '<p class="rss-item-date">' . $date->format('D j F Y h:i:s A e');
     if ($item->get_authors()) {
       echo ', by ';
       foreach ($item->get_authors() as $author) {

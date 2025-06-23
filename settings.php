@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
 
 $dbs = require __DIR__ . '/scripts/db.php';
 $userdb = $dbs['userdb'];
@@ -41,13 +39,18 @@ if (isset($_SESSION['user_id'])) {
 // if the request method is POST, the form was submitted: handle it
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postData = $_POST;
-    $sql = "UPDATE user_preferences SET itemsPerPage = ? WHERE id = ?";
+    $sql = "UPDATE user_preferences SET
+    itemsPerPage = ?,
+    timezone = ?
+    WHERE id = ?";
     $stmt = $mrssdb->prepare($sql);
 
     $itemsPerPage = isset($postData['itemsperpage']) ? (int)$postData['itemsperpage'] : $userPreferences['itemsPerPage'];
+    $timezone = isset($postData['timezone']) ? $postData['timezone'] : $userPreferences['timezone'];
+    $timezone = in_array($timezone, DateTimeZone::listIdentifiers()) ? $timezone : 'Europe/London'; // if teh timezone is invalid, default it to my timezone because yum
     $userId = $_SESSION['user_id'];
 
-    $stmt->bind_param('ii', $itemsPerPage, $userId);
+    $stmt->bind_param('isi', $itemsPerPage, $timezone, $userId);
     if ($stmt->execute()) {
         header('Location: /settings.php?success=1');
     } else {
@@ -92,6 +95,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="settings-container hidden" id="general">
                     <h1>General</h1>
+                    <form action="/settings.php" method="post" id="general-settings-form">
+                        <div class="options">
+                            <div class="column-align-left">
+                                <label for="timezone">Timezone:</label>
+                            </div>
+                            <div class="column-align-right">
+                                <div>
+                                    <input list="timezone" type="text" id="timezone-input" name="timezone" value="<?php echo htmlspecialchars($userPreferences['timezone']); ?>" class="vertical-align-middle" placeholder="Continent/MajorCity">
+                                    <datalist id="timezone" name="timezone">
+                                        <?php
+                                        $timezones = DateTimeZone::listIdentifiers();
+                                        foreach ($timezones as $timezone) {
+                                            $selected = ($userPreferences['timezone'] === $timezone) ? 'selected' : '';
+                                            echo "<option value=\"$timezone\" $selected>$timezone</option>";
+                                        }
+                                        ?>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-buttons">
+                            <button type="button" id="default-general-settings">Reset to default</button>
+                            <button type="button" id="cancel-general-settings">Undo all</button>
+                            <button type="submit" id="save-general-settings">Apply</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="settings-container hidden" id="layout">
                     <h1>Layout</h1>

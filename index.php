@@ -48,14 +48,15 @@ if (isset($_SESSION['user_id'])) {
             </div>
                 <script>
                     let rssFeedContainer = document.querySelector('.rss-feed');
-                    let feedURL = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
+                    let feedURL = encodeURIComponent("https://amigaos.net/taxonomy/term/7/feed");
+                    let urlParams = '?url=' + feedURL + '&pageLength=<?php echo $userPreferences['itemsPerPage']?>&timezone=<?php echo $userPreferences['timezone']?>';
                     function attachListeners() {
                         document.querySelectorAll('.different-page').forEach(page => {
                             page.addEventListener('click', () => {
                                 let url = new URL(window.location.href);
                                 url.searchParams.set('fromPage', page.id);
                                 // Instead of reloading, fetch new page content!
-                                fetch("/scripts/rss2html.php?url=" + feedURL + "&fromPage=" + page.id + "&pageLength=<?php echo $userPreferences['itemsPerPage']?>")
+                                fetch("/scripts/rss2html.php" + urlParams + "&fromPage=" + page.id)
                                     .then(res => res.text())
                                     .then(data => {
                                         rssFeedContainer.innerHTML = data;
@@ -66,19 +67,42 @@ if (isset($_SESSION['user_id'])) {
 
                         document.querySelectorAll('.rss-item').forEach(item => {
                             item.addEventListener('click', () => {
+                                let floatingWindowBackdrop = document.createElement('div');
+                                floatingWindowBackdrop.className = 'floating-rss-item-backdrop';
+                                document.querySelector('.rss-feed').appendChild(floatingWindowBackdrop);
+
                                 let floatingWindow = document.createElement('div');
                                 floatingWindow.className = 'floating-rss-item';
                                 floatingWindow.innerHTML = item.innerHTML;
                                 floatingWindow.style.margin = document.querySelector('.rss-feed').offsetHeight + 'px';
                                 floatingWindow.style.transition = 'margin 0.5s cubic-bezier(0.1, 1.2, 0.8, 1)';
-                                document.querySelector('.rss-feed').appendChild(floatingWindow);
+                                floatingWindowBackdrop.appendChild(floatingWindow);
+
                                 setTimeout(() => {
                                     floatingWindow.style.margin = '50px';
                                 }, 10);
+
+                                // antés... clicking on floatingWindow would also trigger the backdrop click event... pero ahora... no :D
+                                floatingWindow.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                });
+                                function closeFloatingWindow() {
+                                    floatingWindowBackdrop.remove();
+                                    floatingWindow.remove();
+                                }
+                                floatingWindowBackdrop.addEventListener('click', () => {
+                                    closeFloatingWindow();
+                                });
+                                document.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') {
+                                        closeFloatingWindow();
+                                    }
+                                });
+
                             });
-                        });
+                            });
                     }
-                    let response = fetch("/scripts/rss2html.php?url=" + feedURL + "&fromPage=1&pageLength=<?php echo $userPreferences['itemsPerPage']?>", {
+                    let response = fetch("/scripts/rss2html.php" + urlParams + "&fromPage=1", {
                         method: 'GET',
                     });
                     response.then(res => {
