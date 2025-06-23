@@ -1,5 +1,6 @@
 <?php
 $dbs = require __DIR__ . '/scripts/db.php';
+require_once __DIR__ . '/scripts/functions.php';
 $userdb = $dbs['userdb'];
 $mrssdb = $dbs['mrssdb'];
 session_set_cookie_params([
