@@ -67,6 +67,7 @@ input[type="range"] {
     appearance: none;
     height: 4px;
     padding: 0;
+    background: transparent;
     background-color: #29292975;
     border: 1px solid black;
 }
@@ -126,10 +127,6 @@ input[type="range"]::-ms-tooltip {
     display: none;
 }
 
-/* Remove default styles for Firefox and IE */
-input[type="range"] {
-    background: transparent;
-}
 
 input[type="range"]:focus {
     outline: none;
@@ -256,7 +253,7 @@ hr {
     display: none !important;
 }
 
-.settings-container {
+.settings-container, .large-container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -300,9 +297,13 @@ hr {
 
 .rss-item {
     margin: 10px 0;
-    padding: 10px;
     width: 100%;
-    height: -webkit-fill-available;
+    flex: 1 1 auto;
+    cursor: pointer;
+}
+
+.rss-item, .floating-rss-item {
+    padding: 10px;
     background: #f1f1f1;
     border-radius: 10px;
     border: 1px solid black;
@@ -310,6 +311,16 @@ hr {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+.floating-rss-item {
+    position: fixed;
+    margin: 50px;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    z-index: 1000;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
 }
 
 .rss-item-title {

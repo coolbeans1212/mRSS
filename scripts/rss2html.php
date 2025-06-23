@@ -18,10 +18,12 @@ if ($_GET['cache'] ?? 'true' == 'false') {
     $feed->set_cache_duration(1800); // only cache for 30 minutes
 }
 $feed->init();
-echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1 class="margin-20px">' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . ' (Demo feed)' . '</h1></a>';
+echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1>' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . ' (Demo feed)' . '</h1></a>';
 echo '<div class="rss-items-container">';
+$id = 0;
 foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) {
-    echo '<div class="rss-item">';
+    $id++;
+    echo '<div class="rss-item" id="' . $id . '">';
     echo '<h2 class="rss-item-title"><a href="' . $item->get_permalink() . '">' . $item->get_title() . '</a></h2>';
     echo '<p class="rss-item-description">' . $item->get_description() . '</p>';
     echo '<div class="rss-item-footer">';
@@ -38,8 +40,8 @@ foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) 
 echo '</div>';
 ?>
 <div class="page-navigation">
-<!-- Pagination -->
 <?php
+// Page navigation
 $totalItems = $feed->get_item_quantity();
 $totalPages = ceil($totalItems / $pageLength);
 $minimumPageToDisplay = $fromPage > 5 ? $fromPage - 5 : 1;

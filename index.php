@@ -49,7 +49,7 @@ if (isset($_SESSION['user_id'])) {
                 <script>
                     let rssFeedContainer = document.querySelector('.rss-feed');
                     let feedURL = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
-                    function attachPaginationListeners() {
+                    function attachListeners() {
                         document.querySelectorAll('.different-page').forEach(page => {
                             page.addEventListener('click', () => {
                                 let url = new URL(window.location.href);
@@ -59,8 +59,22 @@ if (isset($_SESSION['user_id'])) {
                                     .then(res => res.text())
                                     .then(data => {
                                         rssFeedContainer.innerHTML = data;
-                                        attachPaginationListeners(); // re-attach after update :3
+                                        attachListeners(); // re-attach after update :3
                                     });
+                            });
+                        });
+
+                        document.querySelectorAll('.rss-item').forEach(item => {
+                            item.addEventListener('click', () => {
+                                let floatingWindow = document.createElement('div');
+                                floatingWindow.className = 'floating-rss-item';
+                                floatingWindow.innerHTML = item.innerHTML;
+                                floatingWindow.style.margin = document.querySelector('.rss-feed').offsetHeight + 'px';
+                                floatingWindow.style.transition = 'margin 0.5s cubic-bezier(0.1, 1.2, 0.8, 1)';
+                                document.querySelector('.rss-feed').appendChild(floatingWindow);
+                                setTimeout(() => {
+                                    floatingWindow.style.margin = '50px';
+                                }, 10);
                             });
                         });
                     }
@@ -74,7 +88,7 @@ if (isset($_SESSION['user_id'])) {
                         throw new Error('Network response was not ok');
                     }).then(data => {
                         rssFeedContainer.innerHTML = data;
-                        attachPaginationListeners(); // attach after first load :P
+                        attachListeners(); // attach after first load :P
                     }).catch(error => {
                         console.error('Fetch error:', error);
                     });
