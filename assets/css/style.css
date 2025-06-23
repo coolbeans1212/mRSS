@@ -437,3 +437,7 @@ hr {
     cursor: default;
     font-style: italic;
 }
+
+.small-text {
+    font-size: 12px;
+}
