@@ -1,3 +1,7 @@
+:root { /* css variables are lowkey flames */
+    --sidebar-width: 22%;
+}
+
 body {
     margin: 0;
     font-family: Verdana, sans-serif;
@@ -142,7 +146,7 @@ button {
 }
 
 main {
-    height: calc(100vh - 93px);
+    height: calc(100vh - 83px);
     display: flex;
     overflow: hidden;
     min-width: 0;
@@ -226,9 +230,8 @@ hr {
     display: flex;
     background-color: #f5f5f5;
     border-right: 3px solid black;
-    padding: 5px;
     height: 100%;
-    width: 22%;
+    width: var(--sidebar-width);
     flex-direction: column;
     flex-shrink: 0;
 }
@@ -241,7 +244,7 @@ hr {
     background-color: #fafafa;
     padding: 3px;
     border-radius: 5px;
-    margin: 2px 0;
+    margin: 2px 5px;
 }
 
 .feed-icon {
@@ -293,6 +296,7 @@ hr {
     flex-direction: column;
     height: calc(100% - 50px - 40px);
     width: 100%;
+    min-height: 0;
 }
 
 .rss-item {
@@ -304,7 +308,7 @@ hr {
     overflow: hidden;
 }
 
-.rss-item, .floating-rss-item {
+.rss-item, .floating-rss-item, .floating-small-window {
     padding: 10px;
     background: #f1f1f1;
     border-radius: 10px;
@@ -316,6 +320,9 @@ hr {
 
 .floating-rss-item-backdrop {
     position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 0;
     left: 0;
     width: 100%;
@@ -326,7 +333,7 @@ hr {
 
 .floating-rss-item {
     position: fixed;
-    margin: 50px;
+    margin: 5vh 5vw;
     flex: 1 1 auto;
     overflow-y: auto;
     z-index: 1000;
@@ -334,6 +341,16 @@ hr {
     width: -moz-available;
     height: -webkit-fill-available;
     height: -moz-available;
+}
+
+.floating-small-window {
+    position: fixed;
+    margin: 5vh 5vw;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 40vw;
+    height: 50vh;
 }
 
 .rss-item-title {
@@ -414,6 +431,12 @@ hr {
     right: 38px;
 }
 
+.add-feed-buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
 .page-navigation {
     display: flex;
     flex-direction: row;
@@ -440,4 +463,27 @@ hr {
 
 .small-text {
     font-size: 12px;
+}
+
+.add-new-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background-color: #f0f0f0;
+}
+
+.add-new {
+    width: 100%;
+    padding: 5px;
+    margin: auto;
+    border: 1px solid black;
+    cursor: pointer;
+    text-align: center;
+}
+
+.boing-boing {
+    transition: margin 0.5s cubic-bezier(0.1, 1.2, 0.8, 1);
 }

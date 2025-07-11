@@ -29,6 +29,18 @@ if (isset($_SESSION['user_id'])) {
         $result = $stmt->get_result();
     }
     $userPreferences = $result->fetch_assoc();
+    // validate timezone (because alex felt like having a timezone of 'One' and still wanted the site to work)
+    $timezones = DateTimeZone::listIdentifiers();
+    $timezoneExists = false;
+    foreach ($timezones as $timezone) {
+        if ($timezone === $userPreferences['timezone']) {
+            $timezoneExists = true;
+            break;
+        }
+    }
+    if ($timezoneExists !== true) {
+        $userPreferences['timezone'] = 'Europe/London';
+    }
 }
 ?>
 
@@ -44,12 +56,16 @@ if (isset($_SESSION['user_id'])) {
         </header>
         <main>
             <div class="rss-feeds-listing">
+                <div class="add-new-container">
+                    <div class="add-new" id="new-feed">New Feed</div>
+                    <div class="add-new" id="new-category">New Category</div>
+                </div>
             </div>
             <div class="rss-feed">
             </div>
                 <script>
                     let rssFeedContainer = document.querySelector('.rss-feed');
-                    let feedURL = encodeURIComponent("https://amigaos.net/taxonomy/term/7/feed");
+                    let feedURL = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
                     let urlParams = '?url=' + feedURL + '&pageLength=<?php echo $userPreferences['itemsPerPage']?>&timezone=<?php echo $userPreferences['timezone']?>';
                     function attachListeners() {
                         document.querySelectorAll('.different-page').forEach(page => {
@@ -73,24 +89,20 @@ if (isset($_SESSION['user_id'])) {
                                 document.querySelector('.rss-feed').appendChild(floatingWindowBackdrop);
 
                                 let floatingWindow = document.createElement('div');
-                                floatingWindow.className = 'floating-rss-item';
+                                floatingWindow.className = 'floating-rss-item boing-boing';
+                                floatingWindow.id = 'floating-window';
                                 floatingWindow.innerHTML = item.innerHTML;
                                 floatingWindow.style.margin = document.querySelector('.rss-feed').offsetHeight + 'px';
-                                floatingWindow.style.transition = 'margin 0.5s cubic-bezier(0.1, 1.2, 0.8, 1)';
                                 floatingWindowBackdrop.appendChild(floatingWindow);
 
                                 setTimeout(() => {
-                                    floatingWindow.style.margin = '50px';
+                                    floatingWindow.style.margin = '5vh 5vw';
                                 }, 10);
 
                                 // antés... clicking on floatingWindow would also trigger the backdrop click event... pero ahora... no :D
                                 floatingWindow.addEventListener('click', (e) => {
                                     e.stopPropagation();
                                 });
-                                function closeFloatingWindow() {
-                                    floatingWindowBackdrop.remove();
-                                    floatingWindow.remove();
-                                }
                                 floatingWindowBackdrop.addEventListener('click', () => {
                                     closeFloatingWindow();
                                 });
@@ -103,6 +115,14 @@ if (isset($_SESSION['user_id'])) {
                             });
                             });
                     }
+
+                    function closeFloatingWindow() {
+                        let floatingWindowBackdrop = document.querySelector('.floating-rss-item-backdrop');
+                        let floatingWindow = document.querySelector('#floating-window');
+                        floatingWindowBackdrop.remove();
+                        floatingWindow.remove();
+                    }
+                    
                     let response = fetch("/scripts/rss2html.php" + urlParams + "&fromPage=1", {
                         method: 'GET',
                     });
@@ -117,9 +137,45 @@ if (isset($_SESSION['user_id'])) {
                     }).catch(error => {
                         console.error('Fetch error:', error);
                     });
+
+                    // so this is the bit where you click on 'new feed' and it appears
+                    document.querySelector('#new-feed').addEventListener('click', () => {
+                        let floatingWindowBackdrop = document.createElement('div');
+                        floatingWindowBackdrop.className = 'floating-rss-item-backdrop';
+                        document.querySelector('.rss-feed').appendChild(floatingWindowBackdrop);
+                        let floatingWindow = document.createElement('div');
+                        floatingWindow.className = 'floating-small-window boing-boing';
+                        floatingWindow.style.margin = document.querySelector('.rss-feed').offsetHeight + 'px';
+                        floatingWindow.id = 'floating-window';
+                        floatingWindow.innerHTML = `
+                            <h1>Add New Feed</h1>
+                            <form id="new-feed-form">
+                                <div class="rss-item-description">
+                                    <label for="feed-url">Feed URL:</label>
+                                    <input type="text" id="feed-url" name="feed-url" required>
+                                </div>
+                                <div class="add-feed-buttons">
+                                    <button type="submit">Add Feed</button>
+                                </div>
+                            </form>
+                        `;
+                        floatingWindowBackdrop.appendChild(floatingWindow);
+                        setTimeout(() => {
+                            floatingWindow.style.margin = '5vh 5vw';
+                        }, 10);
+                        floatingWindow.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                        });
+                        floatingWindowBackdrop.addEventListener('click', () => {
+                            closeFloatingWindow();
+                        });
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === 'Escape') {
+                                closeFloatingWindow();
+                            }
+                        });
+                    });
                 </script>
-                <script>
-                    
         </main>
     </body>
 </html>
