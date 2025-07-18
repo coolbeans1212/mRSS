@@ -65,7 +65,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
                 <script>
                     let rssFeedContainer = document.querySelector('.rss-feed');
-                    let feedURL = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
+                    let feedURL = encodeURIComponent("https://amigaos.net/taxonomy/term/7/feed");
                     let urlParams = '?url=' + feedURL + '&pageLength=<?php echo $userPreferences['itemsPerPage']?>&timezone=<?php echo $userPreferences['timezone']?>';
                     function attachListeners() {
                         document.querySelectorAll('.different-page').forEach(page => {
@@ -138,7 +138,7 @@ if (isset($_SESSION['user_id'])) {
                         console.error('Fetch error:', error);
                     });
 
-                    // so this is the bit where you click on 'new feed' and it appears
+                    // so this is the bit where you click on 'new feed' and it appears and it also does the thing
                     document.querySelector('#new-feed').addEventListener('click', () => {
                         let floatingWindowBackdrop = document.createElement('div');
                         floatingWindowBackdrop.className = 'floating-rss-item-backdrop';
@@ -152,14 +152,71 @@ if (isset($_SESSION['user_id'])) {
                             <form id="new-feed-form">
                                 <div class="rss-item-description">
                                     <label for="feed-url">Feed URL:</label>
-                                    <input type="text" id="feed-url" name="feed-url" required>
+                                    <input type="text" id="feed-url" name="feed-url" required> <button type="button" id="fetch-feed-info">Continue</button>
                                 </div>
                                 <div class="add-feed-buttons">
-                                    <button type="submit">Add Feed</button>
+                                    <button type="submit" disabled>Add Feed</button>
                                 </div>
                             </form>
                         `;
                         floatingWindowBackdrop.appendChild(floatingWindow);
+                        let feedForm = document.querySelector('#new-feed-form');
+                        let feedFormMainBody = feedForm.querySelector('.rss-item-description');
+                        let feedUrlInput = document.querySelector('#feed-url');
+                        let fetchFeedInfoButton = document.querySelector('#fetch-feed-info');
+                        fetchFeedInfoButton.addEventListener('click', () => {
+                            fetchFeedInfoButton.disabled = true;
+                            let feedUrl = feedUrlInput.value.trim();
+                            if (feedUrl === '') {
+                                alert('Please enter a valid feed URL.');
+                                fetchFeedInfoButton.disabled = false;
+                                return;
+                            }
+                            fetch('/api/getFeedInfo.php?feedUrl=' + encodeURIComponent(feedUrl))
+                                .then(response => response.json())
+                                .then(feedInfo => {
+                                    if (feedInfo.error) {
+                                        if (document.querySelector('.error-display')) {
+                                            document.querySelector('.error-display').remove();
+                                        }
+                                        let errorDisplay = document.createElement('div');
+                                        errorDisplay.className = 'error-display';
+                                        errorDisplay.textContent = feedInfo.error;
+                                        feedFormMainBody.appendChild(errorDisplay);
+                                        fetchFeedInfoButton.disabled = false;
+                                        return;
+                                    } else {
+                                        if (document.querySelector('.error-display')) {
+                                            document.querySelector('.error-display').remove();
+                                        }
+                                        let title = feedInfo.title || 'No Title';
+                                        let description = feedInfo.description || 'No Description';
+                                        let image = feedInfo.image || '';
+                                        floatingWindow.innerHTML += `
+                                            <div class="rss-item-description">
+                                            <div class="form-row">
+                                                <label for="feed-title">Feed Title:</label>
+                                                <input type="text" id="feed-title" name="feed-title" value="${title}" required><br>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="feed-description">Feed Description:</label>
+                                                <textarea id="feed-description" name="feed-description">${description}</textarea><br>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="feed-image">Feed Image URL:</label>
+                                                <input type="text" id="feed-image" name="feed-image" value="${image}"> <img src="${image}" class="feed-image"><br>
+                                            </div>
+                                            <div class="add-feed-buttons">
+                                                <button type="submit">Add Feed</button>
+                                            </div>
+                                        `;
+                                        document.querySelector('#feed-url').value = `${feedUrl}`;
+                                    }
+                                })
+                            });
+                            
+
+
                         setTimeout(() => {
                             floatingWindow.style.margin = '5vh 5vw';
                         }, 10);

@@ -19,7 +19,7 @@ if ($_GET['cache'] ?? 'true' == 'false') {
     $feed->set_cache_duration(1800); // only cache for 30 minutes
 }
 $feed->init();
-echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1>' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . ' (Demo feed)' . '</h1></a>';
+echo '<a href="' . htmlspecialchars($feed->get_permalink()) . '"><h1>' . htmlspecialchars($feed->get_title() ?? $feed->get_permalink()) . '</h1></a>';
 echo '<div class="rss-items-container">';
 $id = 0;
 foreach ($feed->get_items(($fromPage - 1) * $pageLength, $pageLength) as $item) {
