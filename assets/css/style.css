@@ -506,4 +506,5 @@ hr {
     object-fit: cover;
     border: 1px solid black;
     border-radius: 5px;
+    margin-left: 2px;
 }

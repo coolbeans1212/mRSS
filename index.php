@@ -194,6 +194,8 @@ if (isset($_SESSION['user_id'])) {
                                         let image = feedInfo.image || '';
                                         floatingWindow.innerHTML += `
                                             <div class="rss-item-description">
+                                            <form action="/api/postNewFeed.php" method="POST" id="new-feed-form">
+                                            <input type="hidden" name="feed-url" value="${feedUrl}">
                                             <div class="form-row">
                                                 <label for="feed-title">Feed Title:</label>
                                                 <input type="text" id="feed-title" name="feed-title" value="${title}" required><br>
@@ -209,8 +211,24 @@ if (isset($_SESSION['user_id'])) {
                                             <div class="add-feed-buttons">
                                                 <button type="submit">Add Feed</button>
                                             </div>
+                                            </form>
+                                            </div>
                                         `;
-                                        document.querySelector('#feed-url').value = `${feedUrl}`;
+                                        document.querySelector('#feed-url').value = `${feedUrl}`; // it disappears unless i have this sorry gng
+                                        let feedImageInput = document.querySelector('#feed-image');
+                                        feedImageInput.addEventListener('input', (e) => {
+                                            let feedImage = document.querySelector('.feed-image');
+                                            feedImage.src = e.target.value;
+                                            if (e.target.value === '') {
+                                                feedImage.style.display = 'none';
+                                            } else {
+                                                feedImage.style.display = 'inline';
+                                                // on error, display = none
+                                                feedImage.onerror = () => {
+                                                    feedImage.style.display = 'none';
+                                                };
+                                            }
+                                        });
                                     }
                                 })
                             });
